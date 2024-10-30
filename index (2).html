@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functions in Objects </title>
+</head>
+<body>
+    <script>
+//Try changing the value of scores to see how the values of averageScore and highScore change
+let gamer = {
+    name: "Karel",
+    userName: "XmasKarel",
+    scores: [90,39,56,28],
+    //This function computes the average score based on the number of items in the scores list
+    averageScore: function(){
+        let sum = 0;
+        for(let i = 0; i < this.scores.length; i++)
+        {
+            sum += this.scores[i];
+        }
+        return sum / this.scores.length;
+    },
+    //Computes the high score based on the items in the scores list
+    highScore: function(){
+        let max = this.scores[0];
+        for(let i = 0; i < this.scores.length; i++)
+        {
+            if(this.scores[i] > max)
+            {
+                max = this.scores[i];
+            }
+        }
+        return max;
+    },
+};
+
+
+console.log("User: " + gamer.name);
+console.log("High score: " + gamer.highScore());
+console.log("Average score: " + gamer.averageScore());
+//If we don't include (), this is the result
+console.log("Average score without ():\n " + gamer.averageScore);
+   
+    </script>
+</body>
+</html>

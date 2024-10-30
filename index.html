@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
+        <style>
+            button
+                {
+                    border-radius: 25px;
+                    background-color: lightgray;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 16px;
+                    cursor:pointer;
+                    padding: 15px;
+                    margin-left:28%;
+                }
+        </style>
+	</head>
+
+
+	<body>
+	    <h2>Click the button to enter your username, then click it again and enter the same username!</h2>
+	    <button id = user-info>Click to Enter Username!</button>
+	    <div id = welcome></div>
+	    <script>
+	        $("#user-info").click(function(){
+	            let userName = prompt("Enter your user name:");
+	            //If username exists, update their information on the webpage
+	            if(localStorage.getItem(userName))
+	            {
+	                //retrieve the person object associated with the userName
+	                let user = JSON.parse(localStorage.getItem(userName));
+	                $("#welcome").append("<h2>Welcome back " + user.name + "</h2>");
+	                $("#welcome").append("Your height is " + user.height);
+	                $("#welcome").append(" and your favorite animal is the " + user.favoriteAnimal);
+	            }
+	  //if the username doesn't exist, collect data on user
+	            else{
+	                let nameOfUser = prompt("What is your name?");
+	                let userHeight = prompt("What is your height?");
+	                let userFavAnimal = prompt("What is your favorite animal?");
+	                
+	                //Create person object, and populate property values with the data collected
+	                let person = {
+	                    name: nameOfUser,
+	                    height: userHeight,
+	                    favoriteAnimal: userFavAnimal
+	                };
+	                //add person object to local storage - don't forget to stringify
+	                localStorage.setItem(userName, JSON.stringify(person));
+	            }
+	            });
+	    </script>
+	</body>
+</html>

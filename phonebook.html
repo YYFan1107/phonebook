@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="phonebook.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>My Phonebook</h1>
+        <div id="button-container">
+            <button id="add">Add Contact</button>
+            <button id="retrieve">Retrieve Contact</button>
+            <button id="print">Print Contacts</button>
+        </div>
+        <div id="contact-reveal"></div>
+    </div>
+
+    <script>
+        function addContact() {
+            let firstName = prompt("Enter the first name:");
+            let lastName = prompt("Enter the last name:");
+            let phoneNumber = prompt("Enter the phone number:");
+            let contact = {
+                firstName: firstName,
+                lastName: lastName,
+                phoneNumber: phoneNumber
+            };
+            let phonebook = JSON.parse(localStorage.getItem("phonebook")) || [];
+            phonebook.push(contact);
+            localStorage.setItem("phonebook", JSON.stringify(phonebook));
+        }
+
+        function contactExists(first, last) {
+            let phonebook = JSON.parse(localStorage.getItem("phonebook")) || [];
+            return phonebook.some(function(contact) {
+                return contact.firstName === first && contact.lastName === last;
+            });
+        }
+
+        function retrieveContact(first, last) {
+            let phonebook = JSON.parse(localStorage.getItem("phonebook")) || [];
+            let contact = phonebook.find(function(contact) {
+                return contact.firstName === first && contact.lastName === last;
+            });
+            if (contact) {
+                document.getElementById("contact-reveal").innerText = 
+                    `Name: ${contact.firstName} ${contact.lastName}\nPhone: ${contact.phoneNumber}`;
+            } else {
+                document.getElementById("contact-reveal").innerText = "Contact not found.";
+            }
+        }
+
+        function printContacts() {
+            let phonebook = JSON.parse(localStorage.getItem("phonebook")) || [];
+            let contactReveal = document.getElementById("contact-reveal");
+            contactReveal.innerHTML = "";
+            phonebook.forEach(function(contact) {
+                let contactCard = document.createElement("div");
+                contactCard.classList.add("contact-card");
+                contactCard.innerHTML = `
+                    <strong>${contact.firstName} ${contact.lastName}</strong>
+                    <br>
+                    ${contact.phoneNumber}
+                `;
+                contactReveal.appendChild(contactCard);
+            });
+        }
+
+        document.getElementById("add").addEventListener("click", addContact);
+        document.getElementById("retrieve").addEventListener("click", function() {
+            let firstName = prompt("Enter the first name to retrieve:");
+            let lastName = prompt("Enter the last name to retrieve:");
+            if (contactExists(firstName, lastName)) {
+                retrieveContact(firstName, lastName);
+            } else {
+                let addNew = confirm("Contact not found. Would you like to add it?");
+                if (addNew) {
+                    addContact();
+                }
+            }
+        });
+        document.getElementById("print").addEventListener("click", printContacts);
+    </script>
+</body>
+</html>
